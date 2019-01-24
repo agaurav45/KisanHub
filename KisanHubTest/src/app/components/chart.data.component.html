@@ -1,0 +1,40 @@
+<div class="form-group">
+  <label for="location">Locations:</label>
+  <select class="form-control" id="location" name="location" [(ngModel)]="selectedLocation">
+	<option value="">Select Location</option>
+	<option *ngFor="let location of Locations" value={{location}}>{{location}}</option>
+  </select>
+</div>
+
+<div class="form-group">
+  <label for="metric">Metrics:</label>
+  <select class="form-control" id="metric" name="metric" [(ngModel)]="selectedMetric">
+	<option value="">Select Metric</option>
+	<option *ngFor="let metric of Metrics" value={{metric}}>{{metric}}</option>
+  </select>
+</div>
+
+<div class="form-group">
+	<button type="submit" class="btn" (click)="getChart()" [disabled]="selectedLocation== '' || selectedMetric == '' || showLoading">Get Chart</button>
+	<div *ngIf="showLoading" class="loader"></div>
+</div>	
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr> 
+			<th colspan="3" class="text-center">{{selectedLocation}}-{{selectedMetric}}</th>
+		</tr>
+		<tr> 
+			<th>Value</th>
+			<th>Year</th>
+			<th>Month</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let data of chartData">
+			<td>{{data.value}}</td>
+			<td>{{data.year}}</td>
+			<td>{{monthMap[data.month]}}</td>
+		<tr>
+	</tbody>						
+</table>

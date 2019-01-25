@@ -1,64 +1,69 @@
-<div class="form-group">
-	<label for="location">Locations:</label>
-	<select class="form-control" id="location" name="location" [(ngModel)]="selectedLocation">
-		<option value="">Select Location</option>
-		<option *ngFor="let location of Locations" value={{location}}>{{location}}</option>
-	</select>
-</div>
-
-<div class="form-group">
-	<label for="metric">Metrics:</label>
-	<select class="form-control" id="metric" name="metric" [(ngModel)]="selectedMetric">
-		<option value="">Select Metric</option>
-		<option *ngFor="let metric of Metrics" value={{metric}}>{{metric}}</option>
-	</select>
-</div>
-
-<div class="form-group">
-	<button type="submit" class="btn" (click)="getChart()" [disabled]="selectedLocation== '' || selectedMetric == '' || showLoading">Get Chart</button>
-	<div *ngIf="showLoading" class="loader"></div>
-</div>	
-
-
-<div *ngIf="lineChartData.length>0">
-
-	<div class="col-md-12 text-center" style="margin-top: 10px;height: 50%">
-		<button class="btn" (click)="randomizeType()" style="display: inline-block">Toggle Line/Bar</button>
+<div class="inner-body">
+	<div class="form-group">
+		<label for="location">Locations:</label>
+		<select class="form-control" id="location" name="location" [(ngModel)]="selectedLocation">
+			<option value="">Select Location</option>
+			<option *ngFor="let location of Locations" value={{location}}>{{location}}</option>
+		</select>
 	</div>
-	
-	<div class="col-md-12 text-center" style="margin-top: 10px;height: 50%">
-		<button class="btn pull-left" (click)="previous()" style="display: inline-block">Previous Year</button>
-		<button class="btn pull-right" (click)="next()" style="display: inline-block">Next Year</button>
-	</div>
-	
-	<div class="col-md-12">
-		<canvas baseChart
-                [datasets]="lineChartData"
-                [labels]="lineChartLabels"
-                [options]="lineChartOptions"
-				[legend]="lineChartLegend"
-                [chartType]="lineChartType"
-                (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"></canvas>
-	</div>		
-</div>
 
-<table *ngIf="chartData.length>0" class="table table-bordered table-striped">
-	<thead>
-		<tr> 
-			<th colspan="3" class="text-center">{{selectedLocation}}-{{selectedMetric}}</th>
-		</tr>
-		<tr> 
-			<th>Value</th>
-			<th>Year</th>
-			<th>Month</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr *ngFor="let data of chartData">
-			<td>{{data.value}}</td>
-			<td>{{data.year}}</td>
-			<td>{{monthMap[data.month]}}</td>
-		<tr>
-	</tbody>						
-</table>
+	<div class="form-group">
+		<label for="metric">Metrics:</label>
+		<select class="form-control" id="metric" name="metric" [(ngModel)]="selectedMetric">
+			<option value="">Select Metric</option>
+			<option *ngFor="let metric of Metrics" value={{metric}}>{{metric}}</option>
+		</select>
+	</div>
+
+	<div class="form-group">
+		<button type="submit" class="btn" (click)="getChart()" [disabled]="selectedLocation== '' || selectedMetric == '' || showLoading">Get Chart</button>
+		<div *ngIf="showLoading" class="loader"></div>
+	</div>	
+
+
+	<div *ngIf="lineChartData.length>0">
+
+		<div class="col-md-12 text-center" style="margin-top: 10px;height: 50%">
+			<button class="btn" (click)="randomizeType()">Toggle Line/Bar</button>
+		</div>
+		
+		<div class="col-md-12 text-center" style="margin-top: 10px;height: 50%">
+			<button class="btn pull-left" (click)="previous()" [disabled]="yearIndex== 0">Previous Year</button>
+			<button class="btn pull-right" (click)="next()" [disabled]="yearIndex== 107">Next Year</button>
+		</div>
+		
+		<div class="col-md-12">
+			<canvas baseChart
+					[datasets]="lineChartData"
+					[labels]="lineChartLabels"
+					[options]="lineChartOptions"
+					[legend]="lineChartLegend"
+					[chartType]="lineChartType"
+					(chartHover)="chartHovered($event)"
+					(chartClick)="chartClicked($event)"></canvas>
+		</div>
+
+	</div>
+
+	<table *ngIf="initialChartData.length>0" class="table table-bordered table-striped">
+		<thead>
+			<tr> 
+				<th colspan="3" class="text-center">{{selectedLocation}}-{{selectedMetric}}</th>
+			</tr>
+			<tr> 
+				<th>Value</th>
+				<th>Year</th>
+				<th>Month</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let data of initialChartData">
+				<td>{{data.value}}</td>
+				<td>{{data.year}}</td>
+				<td>{{monthMap[data.month]}}</td>
+			<tr>
+		</tbody>						
+	</table>
+<div>
+
+

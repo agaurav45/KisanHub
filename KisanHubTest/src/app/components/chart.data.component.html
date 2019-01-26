@@ -1,35 +1,56 @@
 <div class="inner-body">
-	<div class="form-group">
-		<label for="location">Locations:</label>
-		<select class="form-control" id="location" name="location" [(ngModel)]="selectedLocation">
-			<option value="">Select Location</option>
-			<option *ngFor="let location of Locations" value={{location}}>{{location}}</option>
-		</select>
+	<div class="row form-group">
+		<div  class="col-md-6">
+			<label for="location">Locations:</label>
+			<select class="form-control" id="location" name="location" [(ngModel)]="selectedLocation">
+				<option value="">Select Location</option>
+				<option *ngFor="let location of Locations" value={{location}}>{{location}}</option>
+			</select>
+		</div>
+		
+		<div  class="col-md-6">
+			<label for="metric">Metrics:</label>
+			<select class="form-control" id="metric" name="metric" [(ngModel)]="selectedMetric">
+				<option value="">Select Metric</option>
+				<option *ngFor="let metric of Metrics" value={{metric}}>{{metric}}</option>
+			</select>
+		</div>
+	</div>
+	
+	<div class="row form-group">
+		<div class="col-md-6">
+			<label for="start">Start Year:</label>
+			<select class="form-control" id="start" name="start" [(ngModel)]="selectedStartYear">
+				<option value="">Select Start Year</option>
+				<option *ngFor="let year of yearList" value={{year}} [disabled]="selectedEndYear!='' && year >= selectedEndYear">{{year}}</option>
+			</select>
+		</div>
+		
+		
+		<div class="col-md-6">
+			<label for="end">End Year:</label>
+			<select class="form-control" id="end" name="end" [(ngModel)]="selectedEndYear">
+				<option value="">Select End Year</option>
+				<option *ngFor="let year of yearList" value={{year}} [disabled]="selectedStartYear!='' && year <= selectedStartYear">{{year}}</option>
+			</select>
+		</div>
 	</div>
 
 	<div class="form-group">
-		<label for="metric">Metrics:</label>
-		<select class="form-control" id="metric" name="metric" [(ngModel)]="selectedMetric">
-			<option value="">Select Metric</option>
-			<option *ngFor="let metric of Metrics" value={{metric}}>{{metric}}</option>
-		</select>
-	</div>
-
-	<div class="form-group">
-		<button type="submit" class="btn" (click)="getChart()" [disabled]="selectedLocation== '' || selectedMetric == '' || showLoading">Get Chart</button>
+		<button type="submit" class="btn" (click)="getChart()" [disabled]="selectedStartYear== '' || selectedEndYear== '' || selectedLocation== '' || selectedMetric == '' || showLoading">Get Chart</button>
 		<div *ngIf="showLoading" class="loader"></div>
 	</div>	
 
-
+	
 	<div *ngIf="lineChartData.length>0">
 
-		<div class="col-md-12 text-center" style="margin-top: 10px;height: 50%">
+		<div class="col-md-12 text-center">
 			<button class="btn" (click)="randomizeType()">Toggle Line/Bar</button>
 		</div>
 		
-		<div class="col-md-12 text-center" style="margin-top: 10px;height: 50%">
-			<button class="btn pull-left" (click)="previous()" [disabled]="yearIndex== 0">Previous Year</button>
-			<button class="btn pull-right" (click)="next()" [disabled]="yearIndex== 107">Next Year</button>
+		<div class="col-md-12 text-center">
+			<button class="btn pull-left" (click)="previous()" [disabled]="selectedStartYear== 1910">Previous Year</button>
+			<button class="btn pull-right" (click)="next()" [disabled]="selectedEndYear== 2017">Next Year</button>
 		</div>
 		
 		<div class="col-md-12">

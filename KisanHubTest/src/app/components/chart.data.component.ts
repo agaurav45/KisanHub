@@ -16,7 +16,9 @@ export class ChartDataComponent {
 	public monthMap: any = {'1': 'January', '2': 'Feburary', '3': 'March', '4': 'April', '5': 'May', '6':'June', '7': 'July', '8': 'August', '9': 'September', '10': 'October', '11': 'November', '12':'December'};
 	public initialChartData: any = [];
 	public chartData:any =[];
-	public yearIndex:number = 107;
+	public yearList:any =[];
+	public selectedStartYear:any= '';
+	public selectedEndYear:any = '';
 	public lineChartType:string = 'line';
 	public lineChartData:any = [];
 	public lineChartLabels:any = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -27,10 +29,14 @@ export class ChartDataComponent {
 	constructor(public _chartService: ChartDataService) { }
 
 	ngOnInit() {
-		
+		for(let i = 1910; i<=2017; i++) { 
+			this.yearList.push(i);
+		}
 	}
 	
 	getChart() {
+		this.initialChartData=[];
+		this.lineChartData = [];
 		this.showLoading = true;
 		this._chartService.getChartData(this.selectedMetric, this.selectedLocation, (result) => {
 			this.initialChartData = result;
@@ -39,15 +45,15 @@ export class ChartDataComponent {
 				this.chartData.push(temp.splice(0, 12));
 			}
 			this.getLineChartData(this.chartData);
-        });
+        });		
 	}
 	
 	getLineChartData(chartData) {
 		this.lineChartData = [];
-		let start = this.yearIndex-10;
-		let end = this.yearIndex;
-		chartData.forEach((ele1, index1) => {			
-			if(index1> start && index1 <= end) {
+		let start = this.selectedStartYear - 1910;
+		let end = this.selectedEndYear - 1910;
+		chartData.forEach((ele1, index1) => {	
+			if(index1>= start && index1 <= end) {
 				let data = [];
 				ele1.forEach((ele2)=> {
 					data.push(ele2.value);	
@@ -72,13 +78,15 @@ export class ChartDataComponent {
 	
 	previous() {
 		this.showLoading = true;
-		this.yearIndex--;
+		this.selectedStartYear--;
+		this.selectedEndYear--;
 		this.getLineChartData(this.chartData);
 	}
 	
 	next() {
 		this.showLoading = true;
-		this.yearIndex++;
+		this.selectedStartYear++;
+		this.selectedEndYear++;
 		this.getLineChartData(this.chartData);
 	}
 }

@@ -23,3 +23,20 @@
 	text-decoration: underline;
     padding-bottom: 30px;
 }
+.inner-body .col-md-12 {
+	margin: 40px 0;
+}
+
+
+
+@media only screen 
+and (max-device-width: 600px) {
+	.inner-body .btn {
+		height: 30px;
+		padding: 0 7px;
+		line-height: 30px;
+	}
+	.inner-body h3 {
+		font-size: 18px;
+	}
+}
